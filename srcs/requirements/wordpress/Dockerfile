@@ -14,15 +14,18 @@ RUN apt-get install -y \
     php8.1-curl \
     php8.1-mbstring \
     php8.1-zip
-RUN apt install -y mariadb-client musl
+RUN apt install -y mariadb-client 
+RUN wget https://github.com/wp-cli/wp-cli-bundle/releases/download/v2.7.0/wp-cli-2.7.0.phar
+RUN chmod +x wp-cli-2.7.0.phar
+RUN mv wp-cli-2.7.0.phar /usr/local/bin/wp
 
-EXPOSE 9000
+COPY ./conf/www.conf /etc/php/8.1/fpm/pool.d/www.conf
 
-COPY ./conf/www.conf /etc/php/8.1/fpm/pool.d
-COPY ./tools /var/www/
+COPY ./tools/wordpress_start.sh /var/www/
 
 RUN chmod +x /var/www/wordpress_start.sh
 
-ENTRYPOINT [ "/var/www/wordpress_start.sh" ]
+# ENTRYPOINT [ "/var/www/wordpress_start.sh" ]
+CMD [ "bash", "/var/www/wordpress_start.sh" ]
 
-CMD ["/usr/sbin/php-fpm8.1", "-F"]
+# CMD ["/usr/sbin/php-fpm8.1", "-F"]
