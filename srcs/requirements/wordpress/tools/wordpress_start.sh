@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DB_PASSWORD=${db_password}
+# DB_PSSWD=$(cat /run/secrets/db_password2)
+DB_PASSWORD=$(cat /run/secrets/db_password)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
 WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 
@@ -9,7 +10,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 
   wp config create --dbname="${DB_NAME}" \
               --dbuser="${WP_ADMIN_LOGIN}" \
-              --dbpass="${WP_ADMIN_PASSWORD}" \
+              --dbpass="${DB_PASSWORD}" \
               --dbhost=mariadb:3306 \
               --allow-root \
               --path=/var/www/html

@@ -40,7 +40,10 @@ services:
     build: ./requirements/wordpress
     env_file:
       - .env
+    # environment:
+    #   - DB_PSSWD=/run/secrets/db_password2
     secrets:
+      # - db_password2
       - db_password
       - wp_admin_password
       - wp_user_password
@@ -66,8 +69,10 @@ services:
     restart: unless-stopped
 
 secrets:
+  # db_password2:
+  #   environment: DB_PSSWD
   db_password:
-    environment: "Nolan123"
+    file: ../secrets/db_password
   wp_admin_password:
     file: ../secrets/wp_admin_password
   wp_user_password:
