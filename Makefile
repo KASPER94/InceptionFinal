@@ -4,14 +4,26 @@ SECRETS := db_password wp_admin_password wp_user_password
 
 # Cible par défaut (tout d'abord, création des répertoires et ensuite docker-compose)
 all: $(VOL_PATH_WP) $(VOL_PATH_DB)
-	@docker swarm init --advertise-addr 127.0.0.1
+	docker swarm init --advertise-addr 127.0.0.1
 	@docker-compose -f ./srcs/docker-compose.yml up
+	docker secret create db_password ./secrets/db_password
+	docker secret create wp_admin_password ./secrets/wp_admin_password
+	docker secret create wp_user_password ./secrets/wp_user_password
 
-secrets:
-	@echo "Setting up Docker secrets..."
-	@echo "Nolan123" | docker secret create db_password - 2>/dev/null || echo "Secret db_password already exists."
-	@echo "Nolan123" | docker secret create wp_admin_password - 2>/dev/null || echo "Secret wp_admin_password already exists."
-	@echo "Dicaprio123" | docker secret create wp_user_password - 2>/dev/null || echo "Secret wp_user_password already exists."
+
+# secrets: $(SECRETS)
+
+# db_password:
+# 	@echo "Nolan123" > ./secrets/db_password
+# 	docker secret create db_password ./secrets/db_password
+
+# wp_admin_password:
+# 	@echo "Nolan123" > ./secrets/wp_admin_password
+# 	docker secret create wp_admin_password ./secrets/wp_admin_password
+
+# wp_user_password:
+# 	@echo "Dicaprio123" > ./secrets/wp_user_password
+# 	docker secret create wp_user_password ./secrets/wp_user_password
 
 # Crée les répertoires nécessaires pour Wordpress et MariaDB et ajuste les permissions
 $(VOL_PATH_WP):
