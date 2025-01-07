@@ -4,11 +4,11 @@ SECRETS := db_password wp_admin_password wp_user_password
 
 # Cible par défaut (tout d'abord, création des répertoires et ensuite docker-compose)
 all: $(VOL_PATH_WP) $(VOL_PATH_DB)
-	docker swarm init --advertise-addr 127.0.0.1
-	@docker-compose -f ./srcs/docker-compose.yml up
+	@(docker swarm init --advertise-addr 127.0.0.1) || echo "swarn already init"
 	docker secret create db_password ./secrets/db_password
 	docker secret create wp_admin_password ./secrets/wp_admin_password
 	docker secret create wp_user_password ./secrets/wp_user_password
+	@docker-compose -f ./srcs/docker-compose.yml up
 
 
 # secrets: $(SECRETS)
