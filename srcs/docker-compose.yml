@@ -67,7 +67,7 @@ services:
 
 secrets:
   db_password:
-    file: ../secrets/db_password
+    environment: "Nolan123"
   wp_admin_password:
     file: ../secrets/wp_admin_password
   wp_user_password:
