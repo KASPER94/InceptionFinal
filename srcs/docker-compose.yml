@@ -25,6 +25,10 @@ services:
     build: ./requirements/mariadb
     env_file:
       - .env
+    secrets:
+      - db_password
+      - wp_admin_password
+      - wp_user_password
     volumes:
       - db:/var/lib/mysql
     networks:
@@ -36,6 +40,10 @@ services:
     build: ./requirements/wordpress
     env_file:
       - .env
+    secrets:
+      - db_password
+      - wp_admin_password
+      - wp_user_password
     depends_on:
       - mariadb
     volumes:
@@ -56,3 +64,11 @@ services:
     networks:
       - app-network
     restart: unless-stopped
+
+secrets:
+  db_password:
+    external: true
+  wp_admin_password:
+    external: true
+  wp_user_password:
+    external: true
